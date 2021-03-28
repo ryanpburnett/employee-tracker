@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql');
 const chalk = require('chalk');
+const cTable = require('console.table')
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -92,9 +93,9 @@ const questions = () => {
                 },
             ]).then(answers => {
                 const { first, last, id, manager } = answers
-                const sqlQuery = 
+                const sqlQuery2 = 
                 `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${first}", "${last}", "${id}", "${manager}");`
-                connection.query(sqlQuery, (err, res) => {
+                connection.query(sqlQuery2, (err, res) => {
                     if(err) throw err
                     console.table(res)
                     questions()

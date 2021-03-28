@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql');
-const chalk = require('chalk')
+const chalk = require('chalk');
+const { restoreDefaultPrompts } = require('inquirer');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -21,16 +22,15 @@ function runInquirer() {
         inquirer
             .prompt([
                 {
-                type: "list",  
-                message: chalk.blue("What would you like to do"),
-                name: "options",
-                choices: [
-                    "Add department",
-                    "View departments",
-                    "Update employee roles",
-                    "End"
-                ],
-                
+                    type: "list",  
+                    message: chalk.blue("What would you like to do"),
+                    name: "options",
+                    choices: [
+                        "Add department",
+                        "View departments",
+                        "Update employee roles",
+                        "End"
+                    ],
                 }
             ]).then(answer => {
                 const { options } = answer;
@@ -46,10 +46,25 @@ function runInquirer() {
             });
 
             function addDepartment() {
-                console.log("addDept")
+                inquirer.prompt(
+                    {
+                        type: "input",
+                        message: "What is the name of the new department?",
+                        name: "newDept"
+                    },
+                ).then(answer => {
+                    const sqlQuery = `INSERT INTO department (name) VALUES ("${answer.newDept}")`
+                    connection.query(sqlQuery, (err, res) => {
+                        if(err) {throw err
+                        }else{
+                            console.table(res)
+                        }
+                    })
+                }) 
             }
             function viewDepartments() {
                 console.log("viewDept")
+                runInquirer()
             }
             function updateEmployeeRoles() {
                 console.log("updateEmp")

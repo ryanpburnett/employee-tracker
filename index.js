@@ -29,6 +29,7 @@ const questions = () => {
                     "Add department",
                     "Add employee",
                     "View departments",
+                    "View employees",
                     "Update employee roles",
                     "End"
                 ],
@@ -41,6 +42,8 @@ const questions = () => {
                 addEmployee();
             }else if(options === "View departments"){
                 viewDepartments();
+            }else if(options === "View employees"){
+                viewEmployees();
             }else if(options === "Update employee roles") {
                 updateEmployeeRoles();
             }else{
@@ -101,6 +104,14 @@ const questions = () => {
 
         function viewDepartments() {
             connection.query('SELECT * FROM department', (err, res) => {
+                if(err) throw err
+                console.table(res)
+                questions()
+            })
+        }
+
+        function viewEmployees() {
+            connection.query('SELECT * FROM employee', (err, res) => {
                 if(err) throw err
                 console.table(res)
                 questions()

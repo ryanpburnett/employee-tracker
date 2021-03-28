@@ -68,9 +68,28 @@ const questions = () => {
         }
 
         function updateEmployeeRoles() {
-            console.log("updateEmp")
-            questions()
+            inquirer.prompt([
+                {
+                    type: "input",
+                    message: "Which employee's role would you like to update? (enter employee ID)",
+                    name: "emp"
+                },
+                {
+                    type: "input",
+                    message: "what role would you like to update this employee to? (enter role id)",
+                    name: "update"
+                },
+                ]).then(answers => {
+                const { emp, update } = answers
+                const sqlQuery = `UPDATE employee SET role_id = ${update} WHERE id = ${emp}`
+                connection.query(sqlQuery, (err, res) => {
+                    if(err) throw err
+                    console.table(res)
+                    questions()
+                })
+            }) 
         }
+
         function end() {
             console.log("see you later")
         }

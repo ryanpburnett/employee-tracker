@@ -56,15 +56,21 @@ function runInquirer() {
                     connection.query(sqlQuery, (err, res) => {
                         if(err) throw err
                         console.table(res)
+                        runInquirer()
                     })
                 }) 
             }
             function viewDepartments() {
-                console.log("viewDept")
-                runInquirer()
+                connection.query('SELECT * FROM department', (err, res) => {
+                    if(err) throw err
+                    console.table(res)
+                    runInquirer()
+                })
             }
+            
             function updateEmployeeRoles() {
                 console.log("updateEmp")
+                runInquirer()
             }
             function end() {
                 console.log("see you later")

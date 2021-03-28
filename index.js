@@ -16,6 +16,8 @@ connection.connect(err => {
     questions()
 })
 
+// work on sanitizing inputs below
+
 const questions = () => {
     inquirer
         .prompt([
@@ -25,6 +27,7 @@ const questions = () => {
                 name: "options",
                 choices: [
                     "Add department",
+                    "Add employee",
                     "View departments",
                     "Update employee roles",
                     "End"
@@ -34,6 +37,8 @@ const questions = () => {
             const { options } = answer;
             if(options === "Add department") {
                 addDepartment();
+            }else if(options === "Add employee"){
+                addEmployee();
             }else if(options === "View departments"){
                 viewDepartments();
             }else if(options === "Update employee roles") {
@@ -59,6 +64,41 @@ const questions = () => {
                 })
             }) 
         }
+        // work on this one
+        function addEmployee() {
+            inquirer.prompt([
+                {
+                    type: "input",
+                    message: "New employee first name?",
+                    name: "first"
+                },
+                {
+                    type: "input",
+                    message: "New employee last name?",
+                    name: "last"
+                },
+                {
+                    type: "input",
+                    message: "New employee ID?",
+                    name: "id"
+                },
+                {
+                    type: "input",
+                    message: "New employee manager id?",
+                    name: "manager"
+                },
+            ]).then(answers => {
+                const { first, last, id, manager } = answers
+                const sqlQuery = 
+                `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${first}", "${last}", "${id}", "${manager}");`
+                connection.query(sqlQuery, (err, res) => {
+                    if(err) throw err
+                    console.table(res)
+                    questions()
+                })
+            }) 
+        }
+
         function viewDepartments() {
             connection.query('SELECT * FROM department', (err, res) => {
                 if(err) throw err

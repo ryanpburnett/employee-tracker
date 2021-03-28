@@ -1,7 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql');
 const chalk = require('chalk');
-const { restoreDefaultPrompts } = require('inquirer');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -55,10 +54,8 @@ function runInquirer() {
                 ).then(answer => {
                     const sqlQuery = `INSERT INTO department (name) VALUES ("${answer.newDept}")`
                     connection.query(sqlQuery, (err, res) => {
-                        if(err) {throw err
-                        }else{
-                            console.table(res)
-                        }
+                        if(err) throw err
+                        console.table(res)
                     })
                 }) 
             }

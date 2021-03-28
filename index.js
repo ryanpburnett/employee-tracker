@@ -13,68 +13,67 @@ const connection = mysql.createConnection({
 connection.connect(err => {
     if (err) throw err
     console.log(`Connected as id ${connection.threadId}`)
-    runInquirer()
+    questions()
 })
 
-function runInquirer() {
-    const questions = () => {
-        inquirer
-            .prompt([
-                {
-                    type: "list",  
-                    message: chalk.blue("What would you like to do"),
-                    name: "options",
-                    choices: [
-                        "Add department",
-                        "View departments",
-                        "Update employee roles",
-                        "End"
-                    ],
-                }
-            ]).then(answer => {
-                const { options } = answer;
-                if(options === "Add department") {
-                    addDepartment();
-                }else if(options === "View departments"){
-                    viewDepartments();
-                }else if(options === "Update employee roles") {
-                    updateEmployeeRoles();
-                }else{
-                    end();
-                }
-            });
-
-            function addDepartment() {
-                inquirer.prompt(
-                    {
-                        type: "input",
-                        message: "What is the name of the new department?",
-                        name: "newDept"
-                    },
-                ).then(answer => {
-                    const sqlQuery = `INSERT INTO department (name) VALUES ("${answer.newDept}")`
-                    connection.query(sqlQuery, (err, res) => {
-                        if(err) throw err
-                        console.table(res)
-                        runInquirer()
-                    })
-                }) 
+const questions = () => {
+    inquirer
+        .prompt([
+            {
+                type: "list",  
+                message: chalk.blue("What would you like to do"),
+                name: "options",
+                choices: [
+                    "Add department",
+                    "View departments",
+                    "Update employee roles",
+                    "End"
+                ],
             }
-            function viewDepartments() {
-                connection.query('SELECT * FROM department', (err, res) => {
+        ]).then(answer => {
+            const { options } = answer;
+            if(options === "Add department") {
+                addDepartment();
+            }else if(options === "View departments"){
+                viewDepartments();
+            }else if(options === "Update employee roles") {
+                updateEmployeeRoles();
+            }else{
+                end();
+            }
+        });
+
+        function addDepartment() {
+            inquirer.prompt(
+                {
+                    type: "input",
+                    message: "What is the name of the new department?",
+                    name: "newDept"
+                },
+            ).then(answer => {
+                const sqlQuery = `INSERT INTO department (name) VALUES ("${answer.newDept}")`
+                connection.query(sqlQuery, (err, res) => {
                     if(err) throw err
                     console.table(res)
-                    runInquirer()
+                    questions()
                 })
-            }
-            
-            function updateEmployeeRoles() {
-                console.log("updateEmp")
-                runInquirer()
-            }
-            function end() {
-                console.log("see you later")
-            }
-    }
-    questions()
+            }) 
+        }
+        function viewDepartments() {
+            connection.query('SELECT * FROM department', (err, res) => {
+                if(err) throw err
+                console.table(res)
+                questions()
+            })
+        }
+
+        function updateEmployeeRoles() {
+            console.log("updateEmp")
+            questions()
+        }
+        function end() {
+            console.log("see you later")
+        }
 }
+
+

@@ -2,6 +2,20 @@ const inquirer = require('inquirer');
 const mysql = require('mysql');
 const chalk = require('chalk')
 
+const connection = mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: 'code123',
+    database: 'schema.sql'
+})
+
+connection.connect(err => {
+    if (err) throw err
+    console.log(`Connected as id ${connection.threadId}`)
+
+})
+
 const questions = () => {
     inquirer
         .prompt([
@@ -40,7 +54,7 @@ const questions = () => {
             console.log("updateEmp")
         }
         function end() {
-            console.log("end")
+            console.log("see you later")
         }
 }
 

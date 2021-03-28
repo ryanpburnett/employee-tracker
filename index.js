@@ -7,55 +7,56 @@ const connection = mysql.createConnection({
     port: 3306,
     user: 'root',
     password: 'code123',
-    database: 'schema.sql'
+    database: 'employee_tracker_db'
 })
 
 connection.connect(err => {
     if (err) throw err
     console.log(`Connected as id ${connection.threadId}`)
-
+    runInquirer()
 })
 
-const questions = () => {
-    inquirer
-        .prompt([
-            {
-            type: "list",  
-            message: chalk.blue("What would you like to do"),
-            name: "options",
-            choices: [
-                "Add department",
-                "View departments",
-                "Update employee roles",
-                "End"
-            ],
-            
-            }
-        ]).then(answer => {
-            const { options } = answer;
-            if(options === "Add department") {
-                addDepartment();
-            }else if(options === "View departments"){
-                viewDepartments();
-            }else if(options === "Update employee roles") {
-                updateEmployeeRoles();
-            }else{
-                end();
-            }
-        });
+function runInquirer() {
+    const questions = () => {
+        inquirer
+            .prompt([
+                {
+                type: "list",  
+                message: chalk.blue("What would you like to do"),
+                name: "options",
+                choices: [
+                    "Add department",
+                    "View departments",
+                    "Update employee roles",
+                    "End"
+                ],
+                
+                }
+            ]).then(answer => {
+                const { options } = answer;
+                if(options === "Add department") {
+                    addDepartment();
+                }else if(options === "View departments"){
+                    viewDepartments();
+                }else if(options === "Update employee roles") {
+                    updateEmployeeRoles();
+                }else{
+                    end();
+                }
+            });
 
-        function addDepartment() {
-            console.log("addDept")
-        }
-        function viewDepartments() {
-            console.log("viewDept")
-        }
-        function updateEmployeeRoles() {
-            console.log("updateEmp")
-        }
-        function end() {
-            console.log("see you later")
-        }
+            function addDepartment() {
+                console.log("addDept")
+            }
+            function viewDepartments() {
+                console.log("viewDept")
+            }
+            function updateEmployeeRoles() {
+                console.log("updateEmp")
+            }
+            function end() {
+                console.log("see you later")
+            }
+    }
+    questions()
 }
-
-questions()

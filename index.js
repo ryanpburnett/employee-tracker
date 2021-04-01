@@ -134,9 +134,9 @@ const questions = () => {
                 },
             ]).then(answers => {
                 const { id, title, salary, deptId } = answers
-                const sqlQuery2 = 
+                const sqlQuery = 
                 `INSERT INTO role (id, title, salary, department_id) VALUES ("${id}", "${title}", "${salary}", "${deptId}");`
-                connection.query(sqlQuery2, (err, res) => {
+                connection.query(sqlQuery, (err, res) => {
                     if(err) throw err
                     console.table(res)
                     questions()

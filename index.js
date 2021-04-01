@@ -19,6 +19,17 @@ connection.connect(err => {
 
 // work on sanitizing inputs below
 
+const choices = [
+    "Add department",
+    "Add employee",
+    "Add role",
+    "View departments",
+    "View employees",
+    "View roles",
+    "Update employee roles",
+    "End"
+]
+
 const questions = () => {
     inquirer
         .prompt([
@@ -26,32 +37,22 @@ const questions = () => {
                 type: "list",  
                 message: chalk.blue("What would you like to do"),
                 name: "options",
-                choices: [
-                    "Add department",
-                    "Add employee",
-                    "Add role",
-                    "View departments",
-                    "View employees",
-                    "View roles",
-                    "Update employee roles",
-                    "End"
-                ],
+                choices: choices,
             }
         ]).then(answer => {
-            const { options } = answer;
-            if(options === "Add department") {
+            if(answer.options === choices[0]) {
                 addDepartment();
-            }else if(options === "Add employee"){
+            }else if(answer.options === choices[1]){
                 addEmployee();
-            }else if(options === "Add role"){
+            }else if(answer.options === choices[2]){
                 addRole();
-            }else if(options === "View departments"){
+            }else if(answer.options === choices[3]){
                 viewDepartments();
-            }else if(options === "View employees"){
+            }else if(answer.options === choices[4]){
                 viewEmployees();
-            }else if(options === "View roles"){
+            }else if(answer.options === choices[5]){
                 viewRoles();
-            }else if(options === "Update employee roles") {
+            }else if(answer.options === choices[6]) {
                 updateEmployeeRoles();
             }else{
                 end();

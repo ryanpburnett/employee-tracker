@@ -29,8 +29,10 @@ const questions = () => {
                 choices: [
                     "Add department",
                     "Add employee",
+                    "Add role",
                     "View departments",
                     "View employees",
+                    "View roles",
                     "Update employee roles",
                     "End"
                 ],
@@ -41,10 +43,14 @@ const questions = () => {
                 addDepartment();
             }else if(options === "Add employee"){
                 addEmployee();
+            }else if(options === "Add role"){
+                addRole();
             }else if(options === "View departments"){
                 viewDepartments();
             }else if(options === "View employees"){
                 viewEmployees();
+            }else if(options === "View roles"){
+                viewRoles();
             }else if(options === "Update employee roles") {
                 updateEmployeeRoles();
             }else{
@@ -68,7 +74,7 @@ const questions = () => {
                 })
             }) 
         }
-        // work on this one
+
         function addEmployee() {
             inquirer.prompt([
                 {
@@ -103,6 +109,40 @@ const questions = () => {
             }) 
         }
 
+        function addRole() {
+            inquirer.prompt([
+                {
+                    type: "input",
+                    message: "What is the new role id#?",
+                    name: "id"
+                },
+                {
+                    type: "input",
+                    message: "What is the role title?",
+                    name: "title"
+                },
+                {
+                    type: "input",
+                    message: "What is the role salary?",
+                    name: "salary"
+                },
+                {
+                    type: "input",
+                    message: "What is the department id#?",
+                    name: "deptId"
+                },
+            ]).then(answers => {
+                const { id, title, salary, deptId } = answers
+                const sqlQuery2 = 
+                `INSERT INTO role (id, title, salary, department_id) VALUES ("${id}", "${title}", "${salary}", "${deptId}");`
+                connection.query(sqlQuery2, (err, res) => {
+                    if(err) throw err
+                    console.table(res)
+                    questions()
+                })
+            }) 
+        }
+
         function viewDepartments() {
             connection.query('SELECT * FROM department', (err, res) => {
                 if(err) throw err
@@ -113,6 +153,14 @@ const questions = () => {
 
         function viewEmployees() {
             connection.query('SELECT * FROM employee', (err, res) => {
+                if(err) throw err
+                console.table(res)
+                questions()
+            })
+        }
+
+        function viewRoles() {
+            connection.query('SELECT * FROM role', (err, res) => {
                 if(err) throw err
                 console.table(res)
                 questions()

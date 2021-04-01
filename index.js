@@ -192,6 +192,7 @@ const questions = () => {
 
         function end() {
             console.log("see you later")
+            process.exit()
         }
 }
 
